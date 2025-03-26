@@ -11,17 +11,17 @@ export class TagService {
   ) {}
 
   create(createTagDto: any) {
-    const tag = new Tag();
-    tag.name = createTagDto.tagName
-    tag.color = createTagDto.tagColor;
-    return this.tagRepository.save(tag);
+    return this.tagRepository.save(createTagDto);
   }
 
-  findAll(page: number, limit: number) {
-    return this.tagRepository.find({
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+  async findAll(page: number, limit: number) {
+    return {
+      data: await this.tagRepository.find({
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      total: await this.tagRepository.count()
+    }
   }
 
   findOne(id: number) {

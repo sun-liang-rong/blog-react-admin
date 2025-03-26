@@ -7,10 +7,10 @@ export class Tag {
   id: number;
   // 标签名称
   @Column({ length: 50})
-  name: string;
+  tagName: string;
   // 标签颜色代码（十六进制）
   @Column({ length: 7 })
-  color: string;
+  tagColor: string;
 
   @CreateDateColumn()
   createTime: Date ;
