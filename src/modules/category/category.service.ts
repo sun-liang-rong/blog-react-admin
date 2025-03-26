@@ -9,7 +9,9 @@ export class CategoryService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
   ) {}
-
+  findAllList() {
+    return this.categoryRepository.find(); 
+  }
   create(createCategoryDto: any) {
     return this.categoryRepository.save(createCategoryDto);
   }

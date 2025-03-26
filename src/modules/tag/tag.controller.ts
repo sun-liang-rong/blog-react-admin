@@ -11,7 +11,7 @@ export class TagController {
   }
 
   @Get()
-  findAll(@Query('page') page: number, @Query('limit') limit: number) {
+  findAll(@Query('page') page: number, @Query('size') limit: number) {
     return this.tagService.findAll(page, limit);
   }
 

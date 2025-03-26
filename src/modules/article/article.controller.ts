@@ -5,13 +5,13 @@ import { ArticleService } from './article.service';
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
-  @Post()
+  @Post('create')
   create(@Body() createArticleDto: any) {
     return this.articleService.create(createArticleDto);
   }
 
-  @Get()
-  findAll(@Query('page') page: number, @Query('limit') limit: number) {
+  @Post()
+  findAll(@Body('page') page: number, @Body('size') limit: number) {
     return this.articleService.findAll(page, limit);
   }
 

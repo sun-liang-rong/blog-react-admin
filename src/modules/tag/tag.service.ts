@@ -11,7 +11,10 @@ export class TagService {
   ) {}
 
   create(createTagDto: any) {
-    return this.tagRepository.save(createTagDto);
+    const tag = new Tag();
+    tag.name = createTagDto.tagName
+    tag.color = createTagDto.tagColor;
+    return this.tagRepository.save(tag);
   }
 
   findAll(page: number, limit: number) {
