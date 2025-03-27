@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@nestjs/common';
 import { ArticleService } from './article.service';
 
 @Controller('articles')
@@ -15,14 +15,14 @@ export class ArticleController {
     return this.articleService.findAll(page, limit);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('detail')
+  findOne(@Query('articleId') id: string) {
     return this.articleService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArticleDto: any) {
-    return this.articleService.update(+id, updateArticleDto);
+  @Put(':id')
+  update(@Body() updateArticleDto: any) {
+    return this.articleService.update(updateArticleDto);
   }
 
   @Delete(':id')

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Category {
@@ -7,8 +7,11 @@ export class Category {
   id: number;
   // 分类名称
   @Column({ length: 50 })
-  name: string;
-  // URL标识符
-  @Column({ length: 100, unique: true})
-  slug: string;
+  categoryName: string;
+  // 创建时间
+  @CreateDateColumn()
+  createTime: Date;
+  // 更新时间
+  @UpdateDateColumn()
+  updateTime: Date;
 }

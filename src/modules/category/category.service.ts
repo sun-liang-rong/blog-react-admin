@@ -9,18 +9,24 @@ export class CategoryService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
   ) {}
-  findAllList() {
-    return this.categoryRepository.find(); 
+  async findAllList() {
+    return {
+      data: await this.categoryRepository.find(),
+      total: await this.categoryRepository.count()
+    }
   }
   create(createCategoryDto: any) {
     return this.categoryRepository.save(createCategoryDto);
   }
 
-  findAll(page: number, limit: number) {
-    return this.categoryRepository.find({
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+  async findAll(page: number, limit: number) {
+    return {
+      data: await this.categoryRepository.find({
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      total: await this.categoryRepository.count()
+    }
   }
 
   findOne(id: number) {

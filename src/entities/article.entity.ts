@@ -13,18 +13,19 @@ export class Article {
   // 文章内容
   @Column('text')
   content: string;
-  // 封面图片URL
   @Column({ nullable: true })
-  coverImage: string;
-  // 是否置顶
+  summary: string;
   @Column({ default: false})
-  isPinned: boolean;
+  readingNum: number;
   // 创建日期
   @CreateDateColumn()
-  publishDate: Date;
-  // email
-  @Column({ length: 100, unique: true })
-  email: string;
+  createTime: Date;
+  // 更新时间
+  @UpdateDateColumn()
+  updateTime: Date;
+
+  @Column({default: ''})
+  coverImage: string;
   // 关系分类
   @ManyToMany(() => Category)
   @JoinTable()
@@ -33,7 +34,5 @@ export class Article {
   @ManyToMany(() => Tag)
   @JoinTable()
   tags: Tag[];
-  // 更新时间
-  @UpdateDateColumn()
-  updatedAt: Date;
+  
 }
