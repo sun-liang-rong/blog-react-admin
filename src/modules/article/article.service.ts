@@ -61,7 +61,7 @@ export class ArticleService {
       ]
     })
     Object.assign(article, updateArticleDto);
-    const category = await this.categoryRepository.find({where: {id: In(updateArticleDto.categoryId)}})
+    const category = await this.categoryRepository.find({where: {id: In([updateArticleDto.categoryId])}})
     const tag = await this.tagRepository.find({where: {id: In(updateArticleDto.tagIds)}})
     article.tags = tag;
     article.categories = category

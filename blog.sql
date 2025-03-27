@@ -1,0 +1,72 @@
+CREATE DATABASE `todolist` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+-- 创建文章表
+CREATE TABLE article (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(200) NOT NULL,
+  content TEXT NOT NULL,
+  summary TEXT,
+  readingNum INT DEFAULT 0,
+  createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  coverImage VARCHAR(255) DEFAULT ''
+);
+
+-- 创建分类表
+CREATE TABLE category (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  categoryName VARCHAR(50) NOT NULL,
+  createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 创建标签表
+CREATE TABLE tag (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  tagName VARCHAR(50) NOT NULL,
+  tagColor CHAR(7) NOT NULL,
+  createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- 创建用户表
+CREATE TABLE user (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(100) NOT NULL,
+  password VARCHAR(100) NOT NULL,
+  avatar VARCHAR(255) NOT NULL,
+  bio TEXT NOT NULL,
+  socialLinks JSON NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- 创建项目表
+CREATE TABLE project (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  description TEXT NOT NULL,
+  coverImage VARCHAR(255),
+  startDate DATE NOT NULL,
+  endDate DATE,
+  projectUrl VARCHAR(200),
+  sourceCodeUrl VARCHAR(200),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  techStack TEXT NOT NULL
+);
+
+-- 创建文章-分类关联表
+CREATE TABLE article_categories_category (
+  articleId INT,
+  categoryId INT,
+  PRIMARY KEY (articleId, categoryId),
+  FOREIGN KEY (articleId) REFERENCES article(id) ON DELETE CASCADE,
+  FOREIGN KEY (categoryId) REFERENCES category(id) ON DELETE CASCADE
+);
+
+-- 创建文章-标签关联表
+CREATE TABLE article_tags_tag (
+  articleId INT,
+  tagId INT,
+  PRIMARY KEY (articleId, tagId),
+  FOREIGN KEY (articleId) REFERENCES article(id) ON DELETE CASCADE,
+  FOREIGN KEY (tagId) REFERENCES tag(id) ON DELETE CASCADE
+);
