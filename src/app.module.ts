@@ -7,8 +7,6 @@ import { ArticleModule } from './modules/article/article.module';
 import { CategoryModule } from './modules/category/category.module';
 import { TagModule } from './modules/tag/tag.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './modules/auth/auth.module';
-import { JwtModule } from '@nestjs/jwt';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { UploadModule } from './modules/upload/upload.module';
@@ -21,8 +19,8 @@ import { UploadModule } from './modules/upload/upload.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'root',
-      password: '12345678',
+      username: 'sunliangrong',
+      password: '123456',
       database: 'todolist',
       entities: [__dirname + '/entities/*.entity{.ts,.js}'],
       synchronize: true, 

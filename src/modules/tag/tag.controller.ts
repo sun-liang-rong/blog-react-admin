@@ -15,10 +15,6 @@ export class TagController {
     return this.tagService.findAll(page, limit);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tagService.findOne(+id);
-  }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateTagDto: any) {
@@ -28,5 +24,13 @@ export class TagController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.tagService.remove(+id);
+  }
+  @Get('blogIndex')
+  findBlog() {
+    return this.tagService.findBlog();
+  }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.tagService.findOne(+id);
   }
 }

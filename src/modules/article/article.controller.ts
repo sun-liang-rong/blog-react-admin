@@ -11,8 +11,17 @@ export class ArticleController {
   }
 
   @Post()
-  findAll(@Body('page') page: number, @Body('size') limit: number) {
-    return this.articleService.findAll(page, limit);
+  findAll(@Body('title') title: string, @Body('categoryId') categoryId: number,@Body('tagIds') tagIds: number [], @Body('page') page: number, @Body('size') limit: number) {
+    return this.articleService.findAll(title, categoryId, tagIds, page, limit);
+  }
+
+  @Post('category')
+  findByCategory(
+    @Body('categoryId') categoryId: number,
+    @Body('page') page: number,
+    @Body('size') limit: number,
+  ) {
+    return this.articleService.findArticlesByCategory(categoryId, page, limit);
   }
 
   @Get('detail')

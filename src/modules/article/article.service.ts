@@ -33,15 +33,32 @@ export class ArticleService {
     return this.articleRepository.save(article);
   }
 
-  async findAll(page: number, limit: number) {
-    return {
-      data: await this.articleRepository.find({
-        skip: (page - 1) * limit,
-        take: limit,
-        relations: ['categories', 'tags'],
-      }),
-      total: await this.articleRepository.count()
+  async findAll(title: string = '', categoryId: number = null, tagIds: number [] = [], page: number, limit: number) {
+    const queryBuilder = this.articleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.categories', 'category')
+      .leftJoinAndSelect('article.tags', 'tag');
+    if (title) {
+      queryBuilder.andWhere('article.title LIKE :title', { title: `%${title}%` });
     }
+    if (categoryId) {
+      queryBuilder.andWhere('category.id = :categoryId', { categoryId });
+    }
+    if (tagIds && tagIds.length > 0) {
+      queryBuilder.andWhere('tag.id IN (:...tagIds)', { tagIds });
+    }
+
+    queryBuilder
+      .skip((page - 1) * limit)
+      .take(limit);
+    const [articles, total] = await Promise.all([
+      queryBuilder.getMany(),
+      queryBuilder.getCount()
+    ]);
+    return {
+      data: articles,
+      total
+    };
   }
 
   findOne(id: number) {
@@ -81,5 +98,25 @@ export class ArticleService {
       .take(limit);
 
     return queryBuilder.getMany();
+  }
+
+  async findArticlesByCategory(categoryId: number, page: number, limit: number) {
+    const queryBuilder = this.articleRepository
+      .createQueryBuilder('article')
+      .leftJoinAndSelect('article.categories', 'category')
+      .leftJoinAndSelect('article.tags', 'tag')
+      .where('category.id = :aa', { categoryId })
+      .skip((page - 1) * limit)
+      .take(limit);
+
+    const [articles, total] = await Promise.all([
+      queryBuilder.getMany(),
+      queryBuilder.getCount()
+    ]);
+
+    return {
+      data: articles,
+      total
+    };
   }
 }

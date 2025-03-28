@@ -13,7 +13,9 @@ export class TagService {
   create(createTagDto: any) {
     return this.tagRepository.save(createTagDto);
   }
+  findList() {
 
+  }
   async findAll(page: number, limit: number) {
     return {
       data: await this.tagRepository.find({
@@ -34,5 +36,8 @@ export class TagService {
 
   remove(id: number) {
     return this.tagRepository.delete(id);
+  }
+  findBlog() {
+    return this.tagRepository.find();
   }
 }
