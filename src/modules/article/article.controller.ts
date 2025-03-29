@@ -23,19 +23,32 @@ export class ArticleController {
   ) {
     return this.articleService.findArticlesByCategory(categoryId, page, limit);
   }
-
+  // 博客详情
   @Get('detail')
   findOne(@Query('articleId') id: string) {
     return this.articleService.findOne(+id);
   }
-
-  @Put(':id')
+  // 博客首页
+  @Get('blogIndex')
+  findBlogIndex() {
+    return this.articleService.findBlogIndex();
+  }
+  // 查询首页轮播文章
+  @Get('carousel')
+  findCarousel() {
+    return this.articleService.findCarousel();
+  }
+  // 上一页 下一页
+  @Get('preAndNext')
+  findPreAndNext(@Query('id') id: string) {
+    return this.articleService.findPreAndNext(+id);
+  }
+  @Put('edit')
   update(@Body() updateArticleDto: any) {
     return this.articleService.update(updateArticleDto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete('delete')
+  remove(@Query('articleId') id: string) {
     return this.articleService.remove(+id);
   }
 }

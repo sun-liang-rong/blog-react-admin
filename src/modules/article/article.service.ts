@@ -62,16 +62,55 @@ export class ArticleService {
   }
 
   findOne(id: number) {
+    this.articleRepository.update(id, {
+      readingNum: () => 'readingNum + 1'
+    })
     return this.articleRepository.findOne({
       where: { id },
       relations: ['categories', 'tags'],
     });
   }
-
+  findCarousel() {
+    // 随机取三条数据
+    return this.articleRepository
+     .createQueryBuilder('article')
+     .leftJoinAndSelect('article.categories', 'category')
+     .leftJoinAndSelect('article.tags', 'tag')
+     .orderBy('RAND()')
+     .take(3)
+     .getMany();
+  }
+  findPreAndNext(id: number) {
+    let next = this.articleRepository
+     .createQueryBuilder('article')
+     .where('article.id > :id', { id })
+     .orderBy('article.id', 'ASC')
+     .getOne();
+    let pre = this.articleRepository
+     .createQueryBuilder('article')
+     .where('article.id < :id', { id })
+     .orderBy('article.id', 'DESC')
+    .getOne();
+    // 如果是最后一条数据
+    if (!next) {
+      next = this.articleRepository
+      .createQueryBuilder('article')
+      .orderBy('article.id', 'ASC')
+      .getOne();
+    }
+    // 如果是第一条数据
+    if (!pre) {
+      pre = this.articleRepository
+     .createQueryBuilder('article')
+     .orderBy('article.id', 'DESC')
+     .getOne();
+    }
+    return Promise.all([pre, next ])
+  }
   async update(updateArticleDto: any) {
     const article = await this.articleRepository.findOne({
       where: {
-        id: updateArticleDto.id
+        id: updateArticleDto.articleId
       },
       relations: [
         'categories', 'tags'
@@ -84,8 +123,28 @@ export class ArticleService {
     article.categories = category
     return this.articleRepository.save(article);
   }
-
+  findBlogIndex() {
+    return this.articleRepository
+    .createQueryBuilder('article')
+    .leftJoinAndSelect('article.categories', 'category')
+    .leftJoinAndSelect('article.tags', 'tag')
+    .skip(0)
+    .take(10)
+    .orderBy('article.createTime', 'DESC')
+    .getMany();
+  }
   remove(id: number) {
+    // 删除文章并且删除关联表
+    this.articleRepository
+    .createQueryBuilder('article')
+    .relation(Article, 'categories')
+    .of(id)
+    .remove(id);
+    this.articleRepository
+    .createQueryBuilder('article')
+    .relation(Article, 'tags')
+    .of(id)
+    .remove(id);
     return this.articleRepository.delete(id);
   }
 

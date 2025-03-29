@@ -29,6 +29,10 @@ export class TagController {
   findBlog() {
     return this.tagService.findBlog();
   }
+  @Get('blogTagAndarticle')
+  blogTagAndarticle() {
+    return this.tagService.blogTagAndarticle();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.tagService.findOne(+id);
