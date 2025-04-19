@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tag } from '../../entities/tag.entity';
-
+import { Article } from '../../entities/article.entity';
 @Injectable()
 export class TagService {
   constructor(
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Article)
+    private readonly articleRepository: Repository<Article>,
   ) {}
 
   create(createTagDto: any) {
@@ -102,5 +104,13 @@ export class TagService {
     });
     
     return result;
+  }
+  findTag(id: string) {
+    console.log(id);
+    // 根据标签ID 把所有这个标签的文章查询出来
+    return this.articleRepository.createQueryBuilder('article')
+      .leftJoinAndSelect('article.tags', 'tag')
+      .where('tag.id = :id', { id })
+      .getMany();
   }
 }

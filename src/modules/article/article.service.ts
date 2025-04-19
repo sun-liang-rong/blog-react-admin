@@ -80,6 +80,18 @@ export class ArticleService {
      .take(3)
      .getMany();
   }
+  findArchives() {
+    // 按年月分组 并返回数量
+    return this.articleRepository
+    .createQueryBuilder('article')
+    .select('YEAR(article.createTime) AS year')
+    .addSelect('MONTH(article.createTime) AS month')
+    .addSelect('COUNT(article.id) AS count')
+    .groupBy('year')
+    .addGroupBy('month')
+    .getRawMany();
+
+  }
   findPreAndNext(id: number) {
     let next = this.articleRepository
      .createQueryBuilder('article')

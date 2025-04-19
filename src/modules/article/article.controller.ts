@@ -51,4 +51,9 @@ export class ArticleController {
   remove(@Query('articleId') id: string) {
     return this.articleService.remove(+id);
   }
+  // 帮我实现一个归档的接口
+  @Get('archives')
+  findArchives() {
+    return this.articleService.findArchives();
+  }
 }
